@@ -9,6 +9,7 @@ import time
 import PCA
 import Isomap
 import LLE
+import LaplacianEigenmap
 from mpl_toolkits.mplot3d import Axes3D
 
 #Data parsing
@@ -50,9 +51,16 @@ def graph2d(data, display = True, file_name = None, verbose = True):
 		plt.show()
 	plt.clf()
 
-
+'''
+Examples, in order, 3d plot of data, PCA, Isomap, LLE, LapEig
+'''
 # graph3d(np.column_stack((npdata, color_code)))
-# graph2d(np.column_stack((PCA.pca(npdata, dim = 2), color_code)))
-# graph2d(np.column_stack((Isomap.isomap(npdata, load = 'C.npy'), color_code)))
-graph2d(np.column_stack((LLE.lle(npdata), color_code)))
+graph2d(np.column_stack((PCA.pca(npdata, dim = 2), color_code)), False, 'PCA')
+graph2d(np.column_stack((Isomap.isomap(npdata, load = 'C.npy'), color_code)), False, 'Isomap')
+graph2d(np.column_stack((LLE.lle(npdata), color_code)), False, 'LLE')
+graph2d(np.column_stack((LaplacianEigenmap.le(npdata), color_code)), False, 'LaplacianEigenmap')
 
+#Just a sanity check
+# from sklearn import manifold
+# x = manifold.SpectralEmbedding().fit_transform(X= npdata)
+# graph2d(np.column_stack((x, color_code)))
