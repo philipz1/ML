@@ -55,12 +55,18 @@ def graph2d(data, display = True, file_name = None, verbose = True):
 Examples, in order, 3d plot of data, PCA, Isomap, LLE, LapEig
 '''
 # graph3d(np.column_stack((npdata, color_code)))
-graph2d(np.column_stack((PCA.pca(npdata, dim = 2), color_code)), False, 'PCA')
-graph2d(np.column_stack((Isomap.isomap(npdata, load = 'C.npy'), color_code)), False, 'Isomap')
-graph2d(np.column_stack((LLE.lle(npdata), color_code)), False, 'LLE')
-graph2d(np.column_stack((LaplacianEigenmap.le(npdata), color_code)), False, 'LaplacianEigenmap')
+# graph2d(np.column_stack((PCA.pca(npdata, dim = 2), color_code)), False, 'PCA')
+# graph2d(np.column_stack((Isomap.isomap(npdata, load = 'C.npy'), color_code)), False, 'Isomap')
+# graph2d(np.column_stack((LLE.lle(npdata), color_code)), False, 'LLE')
+graph2d(np.column_stack((LaplacianEigenmap.le(npdata), color_code)), True, 'LaplacianEigenmap')
 
 #Just a sanity check
 # from sklearn import manifold
-# x = manifold.SpectralEmbedding().fit_transform(X= npdata)
-# graph2d(np.column_stack((x, color_code)))
+# x = manifold.SpectralEmbedding(n_neighbors=10).fit_transform(X = npdata)
+# graph2d(np.column_stack((x, color_code)), file_name = 'skLE')
+
+# x = manifold.Isomap(n_neighbors=10).fit_transform(X = npdata)
+# graph2d(np.column_stack((x, color_code)), file_name = 'skIsomap')
+
+# x = manifold.LocallyLinearEmbedding(n_neighbors=10).fit_transform(X = npdata)
+# graph2d(np.column_stack((x, color_code)), file_name = 'skLLE')

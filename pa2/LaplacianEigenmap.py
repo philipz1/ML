@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import KNN
-import scipy
+from scipy.linalg import eigh, eig
 
 # data = pd.read_csv("3Ddata.txt", sep=r"\s+", header = None)
 # n, p = data.shape
@@ -14,7 +14,7 @@ def dist(p1, p2):
 	J = 0
 	for i in range(len(p1)):
 		J += (p1[i] - p2[i]) ** 2
-	return np.e(-J/4)
+	return np.exp(-J)
 
 def knn(data, k):
 	'''
@@ -63,18 +63,22 @@ def construct_degree(A):
 def le(data, k = 10, target_dim = 2):
 	graph = KNN.knn(data, k)
 	A = construct_mesh(data, graph)
-	from sklearn import manifold
-	return(manifold.spectral_embedding(A, 2))
+	# from sklearn import manifold
+	# return(manifold.spectral_embedding(A, 2))
 
-	D = construct_degree(A)
-	L = D - A
+	D = np.diag(A.sum(1))
+	# L = D - A
+	# print(D**(-1/2))
+	x = D ** (-1/2)
+	x[np.isinf(x)] = 0
+	L = np.dot(x, D-A)
+	L = np.dot(L, x)
+	# L[np.isinf(L)] = 0
 
-	eigvals, eigvecs = scipy.linalg.eigh(A, L)
+	eigvals, eigvecs = eig(L, D)
 
-	index = np.argsort(eigvals)[::-1]
+	index = np.argsort(eigvals)[::1]
 	eigvals = eigvals[index]
 	eigvecs = eigvecs[:,index]
 	
-	return eigvecs[:,1:target_dim + 1]
-
-# print(le(npdata))
+	return eigvecs[:, 1: 1 + target_dim]
