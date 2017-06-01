@@ -8,7 +8,7 @@ import numpy as np
 import time
 import kMeans
 import kMixture
-import PCA
+# import pa2.PCA
 from mpl_toolkits.mplot3d import Axes3D
 
 # matplotlib.style.use('ggplot')
@@ -37,6 +37,7 @@ def get_Bounds(data):
 	return bounds
 
 def graph2d(data, display = True, file_name = None, verbose = True):
+	print(data)
 	fig, ax = plt.subplots()
 
 	bounds = get_Bounds(data)
@@ -54,7 +55,7 @@ def graph2d(data, display = True, file_name = None, verbose = True):
 	ax.plot(data_x, data_y, marker = 'o', color = 'white', linestyle = 'None', markersize = 10)
 	
 	if file_name != None:
-		fig.savefig(file_name)#, bbox_inches='tight')
+		fig.savefig(file_name)
 	if display == True:
 		plt.show()
 	plt.clf()
@@ -77,7 +78,7 @@ def graph3d(data, display = True, file_name = None, verbose = True):
 		ax.scatter(centers[0], centers[1], centers[2], marker = 'o', c = 'black')
 	
 	if file_name != None:
-		fig.savefig(file_name)#, bbox_inches='tight')
+		fig.savefig(file_name)#, bbox_inches='tight
 	if display == True:
 		plt.show()
 	plt.clf()
@@ -95,6 +96,29 @@ def graph_it(data, display = True, file_name = None, verbose = True):
 		graph3d(data, display, file_name, verbose)
 
 #Examples
-graph_it(kMeans.kmeans(toydata, 3, plus = True))
+graph_it(kMeans.kmeans(toydata, 3, plus = False))
 # graph_it(kMixture.kmix(toydata, 3, init = 'kmeans'), file_name = 'lol.png')
-# graph_it(kMeans.kmeans(np.random.rand(1000,3), 4, plus = True))
+# graph_it(kMeans.kmeans(np.random.rand(1000,2), 8, plus = True))
+
+
+# toydata = pd.read_csv("Data/3Ddata.txt", sep=r"\s+", header = None)
+# print(toydata)
+# toydata = np.array([toydata.ix[:,0],toydata.ix[:,1], toydata.ix[:,2]]).transpose()
+# graph3d(kMeans.kmeans(toydata, 3, plus = True))
+
+def clusterer(n, clusters):
+	per = n // clusters
+	final = np.array([0,0])
+	for i in range(clusters):
+		center = np.random.rand(1,2)
+		dists = np.random.rand(per, 1)
+		offsets = np.random.randint(0, 359) / 2 / np.pi
+		pointsx = center[:,0] + dists[:,0] * np.cos(offsets)
+		pointsy = center[:,1] + dists[:,1] * np.sin(offsets)
+		np.concatenate(pointsx, pointsy, axis = 1)
+		np.concatenate(final, center)
+		np.concatenate(final, pointsx)
+
+	return final
+
+# clusterer(10, 2)

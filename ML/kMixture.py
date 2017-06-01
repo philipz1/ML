@@ -18,7 +18,7 @@ def random_points(data, k):
     points = np.random.choice(np.arange(0, len(data)), k) 
     return data[np.ix_(list(points), list(np.arange(0, p)))]
 
-def kmix(xs, k, tolerance = 0.01, max_iter=100, verbose = True, init = 'random'):
+def kmix(xs, k, tolerance = 0.01, max_iter = 100, verbose = True, init = 'random'):
     n, p = xs.shape #n total data points, p is dimension
 
     if init == 'kmeans':
